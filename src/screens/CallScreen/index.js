@@ -1,13 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import CallActionBox from '../../components/CallActionBox';
 
 
 const CallScreen = () => {
+ 
   return (
     <View style={styles.root}>
+      
       <View style={styles.cameraPreview} />
-        <View></View>
+      <View></View>
       <CallActionBox />
     </View>
   );

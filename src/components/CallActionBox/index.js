@@ -2,8 +2,11 @@ import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useNavigation} from '@react-navigation/native';
+
 
 const index = () => {
+  const navigation = useNavigation();
   const [isCameraOn, setIsCameraOn] = useState(true)
   const [isMicrophoneOn, setIsMicrophoneOn] = useState(true)
   const onReverseCamera = () => { }
@@ -13,7 +16,9 @@ const index = () => {
   const onToggleMicrophone = () => { 
     setIsMicrophoneOn(currentValue => !currentValue);
   }
-  const onHangup = () => { }
+  const onHangup = () => {
+    navigation.navigate("Contacts")
+   }
   
   return (
     <View style={styles.buttonsContainer}>

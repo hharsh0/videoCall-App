@@ -7,7 +7,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 
 
-const index = () => {
+const IncommingCallScreen = () => {
     const onDecline = () => {
         
     }
@@ -53,7 +53,7 @@ const index = () => {
   );
 }
 
-export default index
+export default IncommingCallScreen
 
 const styles = StyleSheet.create({
   root: {

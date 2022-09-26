@@ -1,12 +1,27 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,Pressable } from 'react-native'
 import React from 'react'
 import CallActionBox from '../../components/CallActionBox'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-const index = () => {
+
+const CallingScreen = () => {
+  const navigation = useNavigation()
+  const route = useRoute()
+
+  const user = route?.params?.user
+
+  const goBack = () => {
+     navigation.pop()
+  };
+  
   return (
     <View style={styles.root}>
+      <Pressable onPress={goBack} style={styles.backButton}>
+        <Ionicons name="chevron-back" color="white" size={25} />
+      </Pressable>
       <View style={styles.cameraPreview}>
-        <Text style={styles.name}>Harsh</Text>
+        <Text style={styles.name}>{user?.user_display_name}</Text>
         <Text style={styles.phoneNumber}>ringing +91 7688900210</Text>
       </View>
       <CallActionBox />
@@ -14,7 +29,7 @@ const index = () => {
   );
 }
 
-export default index
+export default CallingScreen
 
 const styles = StyleSheet.create({
   root: {
@@ -36,5 +51,11 @@ const styles = StyleSheet.create({
   },
   phoneNumber: {
     fontSize: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 50,
+    left: 10,
+    zIndex: 10,
   },
 });
