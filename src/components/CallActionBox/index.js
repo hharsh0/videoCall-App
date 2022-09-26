@@ -5,40 +5,47 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 
 
-const index = () => {
+const CallActionBox = ({onHangupPress}) => {
   const navigation = useNavigation();
-  const [isCameraOn, setIsCameraOn] = useState(true)
-  const [isMicrophoneOn, setIsMicrophoneOn] = useState(true)
-  const onReverseCamera = () => { }
-  const onToggleCamera = () => { 
-    setIsCameraOn((currentValue)=> !currentValue)
-  }
-  const onToggleMicrophone = () => { 
+  const [isCameraOn, setIsCameraOn] = useState(true);
+  const [isMicrophoneOn, setIsMicrophoneOn] = useState(true);
+  const onReverseCamera = () => {};
+  const onToggleCamera = () => {
+    setIsCameraOn(currentValue => !currentValue);
+  };
+  const onToggleMicrophone = () => {
     setIsMicrophoneOn(currentValue => !currentValue);
-  }
-  const onHangup = () => {
-    navigation.navigate("Contacts")
-   }
-  
+  };
+
   return (
     <View style={styles.buttonsContainer}>
       <Pressable onPress={onReverseCamera} style={styles.iconButton}>
         <Ionicons name="ios-camera-reverse" size={30} color={'white'} />
       </Pressable>
       <Pressable onPress={onToggleCamera} style={styles.iconButton}>
-        <MaterialIcons name={ isCameraOn? "camera-off": "camera"} size={30} color={'white'} />
+        <MaterialIcons
+          name={isCameraOn ? 'camera-off' : 'camera'}
+          size={30}
+          color={'white'}
+        />
       </Pressable>
       <Pressable onPress={onToggleMicrophone} style={styles.iconButton}>
-        <MaterialIcons name={isMicrophoneOn?"microphone-off" : "microphone"} size={30} color={'white'} />
+        <MaterialIcons
+          name={isMicrophoneOn ? 'microphone-off' : 'microphone'}
+          size={30}
+          color={'white'}
+        />
       </Pressable>
-      <Pressable onPress={onHangup} style={[styles.iconButton, {backgroundColor: 'red'}]}>
+      <Pressable
+        onPress={onHangupPress}
+        style={[styles.iconButton, {backgroundColor: 'red'}]}>
         <MaterialIcons name="phone-hangup" size={30} color={'white'} />
       </Pressable>
     </View>
   );
-}
+};
 
-export default index
+export default CallActionBox
 
 const styles = StyleSheet.create({
   buttonsContainer: {

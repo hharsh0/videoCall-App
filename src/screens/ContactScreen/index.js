@@ -1,13 +1,25 @@
 import { StyleSheet, Text, View, FlatList, TextInput, Pressable } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import contacts from '../../../assets/data/contacts.json'
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import {Voximplant} from 'react-native-voximplant';
 
 const ContactScreen = () => {
     const [inputText, setInputText] = useState('')
     const [filteredContacts, setFilteredContacts] = useState(contacts)
 
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+    const voximplant = Voximplant.getInstance();
+  
+   useEffect(() => {
+     voximplant.on(Voximplant.ClientEvents.IncomingCall, incomingCallEvent => {
+       navigation.navigate('IncomingCall', {call: incomingCallEvent.call});
+     });
+
+     return () => {
+       voximplant.off(Voximplant.ClientEvents.IncomingCall);
+     };
+   }, []);
 
     useEffect(() => {
         //Search function
@@ -50,7 +62,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contactName: {
-    fontSize: 18,
+    fontSize: 20,
     marginVertical: 10,
   },
   seperator: {
@@ -62,5 +74,6 @@ const styles = StyleSheet.create({
       backgroundColor: '#f0f0f0',
       padding: 10,
       borderRadius: 5,
+      fontSize: 20,
   },
 });

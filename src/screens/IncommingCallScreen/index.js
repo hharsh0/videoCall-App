@@ -1,19 +1,41 @@
 import { StyleSheet, Text, View, ImageBackground, Pressable } from 'react-native'
-import React from 'react'
+import React, {useEffect, useState} from 'react';
 import bg from '../../../assets/images/ios_bg.png'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-
+import {useRoute, useNavigation} from '@react-navigation/native';
+import {Voximplant} from 'react-native-voximplant';
 
 
 const IncommingCallScreen = () => {
+    const [caller, setCaller] = useState('');
+    const route = useRoute();
+    const navigation = useNavigation();
+  const { call } = route.params;
+  
+    useEffect(() => {
+      setCaller(call.getEndpoints()[0].displayName);
+
+      call.on(Voximplant.CallEvents.Disconnected, callEvent => {
+        navigation.navigate('Contacts');
+      });
+
+      return () => {
+        call.off(Voximplant.CallEvents.Disconnected);
+      };
+    }, []);
+
     const onDecline = () => {
-        
-    }
+      call.decline();
+    };
+
     const onAccept = () => {
-        
-    }
+      navigation.navigate('Calling', {
+        call,
+        isIncomingCall: true,
+      });
+    };
 
   return (
     <View style={styles.root}>
