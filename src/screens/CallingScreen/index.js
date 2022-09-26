@@ -1,20 +1,58 @@
-import { StyleSheet, Text, View,Pressable } from 'react-native'
-import React from 'react'
-import CallActionBox from '../../components/CallActionBox'
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  PermissionsAndroid,
+  Alert,
+  Platform,
+} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import CallActionBox from '../../components/CallActionBox';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation, useRoute} from '@react-navigation/native';
 
 
-const CallingScreen = () => {
-  const navigation = useNavigation()
-  const route = useRoute()
+const permissions = [
+  PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+  PermissionsAndroid.PERMISSIONS.CAMERA,
+];
 
-  const user = route?.params?.user
+const CallingScreen = () => {
+  const [permissionGranted, setPermissionGranted] = useState(false);
+  const [callStatus, setCallStatus] = useState('Initializing...');
+  const [localVideoStreamId, setLocalVideoStreamId] = useState('');
+  const [remoteVideoStreamId, setRemoteVideoStreamId] = useState('');
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const user = route?.params?.user;
+
+  useEffect(() => {
+    const getPermissions = async () => {
+      const granted = await PermissionsAndroid.requestMultiple(permissions);
+      const recordAudioGranted =
+        granted[PermissionsAndroid.PERMISSIONS.RECORD_AUDIO] === 'granted';
+      const cameraGranted =
+        granted[PermissionsAndroid.PERMISSIONS.CAMERA] === 'granted';
+      if (!cameraGranted || !recordAudioGranted) {
+        Alert.alert('Permissions not granted');
+      } else {
+        setPermissionGranted(true);
+      }
+    };
+
+    if (Platform.OS === 'android') {
+      getPermissions();
+    } else {
+      setPermissionGranted(true);
+    }
+  }, []);
 
   const goBack = () => {
-     navigation.pop()
+    navigation.pop();
   };
-  
+
   return (
     <View style={styles.root}>
       <Pressable onPress={goBack} style={styles.backButton}>
@@ -27,9 +65,9 @@ const CallingScreen = () => {
       <CallActionBox />
     </View>
   );
-}
+};
 
-export default CallingScreen
+export default CallingScreen;
 
 const styles = StyleSheet.create({
   root: {
